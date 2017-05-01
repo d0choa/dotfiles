@@ -16,10 +16,9 @@ brew cask install google-chrome
 brew cask install papers
 brew cask install textmate
 brew cask install whatsapp
-brew cask install rstudio
 brew cask install rescuetime
 
-brew cask install iterm2
+brew cask install iterm2-nightly
 
 brew cask install emacs
 
