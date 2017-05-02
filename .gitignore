@@ -1,5 +1,10 @@
 ssh/.ssh/id_dsa
 ssh/.ssh/id_rsa
+ssh/.ssh/id_rsa.pub
+ssh/.ssh/id_rsa.pub
+ssh/.ssh/github_rsa
+ssh/.ssh/github_rsa.pub
+ssh/.ssh/known_hosts
 emacs/.emacs.d/elpa
 emacs/.emacs.d/ido.last
 emacs/.emacs.d/history
@@ -11,4 +16,3 @@ emacs/.emacs.d/tramp
 emacs/.emacs.d/abbrev_defs
 emacs/.emacs.d/recentf
 emacs/.emacs.d/.smex-items
-ssh/.ssh/known_hosts
