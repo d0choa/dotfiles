@@ -303,7 +303,11 @@
 (setq flycheck-lintr-linters "with_defaults(camel_case_linter=NULL, infix_spaces_linter=NULL, line_length_linter=lintr::line_length_linter(120))")
 
 
-
+;; for ESS scrolling etc.
+(setq comint-prompt-read-only t)
+(setq comint-scroll-to-bottom-on-input t)
+(setq comint-scroll-to-bottom-on-output t)
+(setq comint-move-point-for-output t)
 
 
 ; Variables I set up from within emacs
@@ -312,9 +316,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(comint-move-point-for-output t)
- '(comint-scroll-show-maximum-output t)
- '(comint-scroll-to-bottom-on-input t)
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
@@ -358,33 +359,6 @@
     (ample-theme color-theme-sanityinc-tomorrow solarized-theme fill-column-indicator flycheck-pos-tip yaml-mode web-mode volatile-highlights textmate smex smart-mode-line scpaste rainbow-mode r-autoyas polymode noctilux-theme monokai-theme markdown-mode magit ido-ubiquitous idle-highlight-mode git-gutter-fringe+ flycheck flx-ido expand-region exec-path-from-shell coffee-mode auto-complete)))
  '(show-paren-mode t))
 
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(flycheck-fringe-error ((t (:background "#161719" :foreground "#F92672" :weight bold))))
-;;  '(flycheck-fringe-info ((t (:background "#161719" :foreground "#66D9EF" :weight bold))))
-;;  '(flycheck-fringe-warning ((t (:background "#161719" :foreground "#E6DB74" :weight bold))))
-;;  '(mode-line-buffer-id ((t (:foreground "#66D9EF" :weigth bold)))))
-
-;; (set-face-attribute 'ac-candidate-face nil   :background "#00222c" :foreground "light gray")
-;; (set-face-attribute 'ac-selection-face nil   :background "SteelBlue4" :foreground "white")
-;; (set-face-attribute 'popup-tip-face    nil   :background "#003A4E" :foreground "light gray")
-
-;; Mark additions/deletions in a git repo, on the margin
-;; (require 'git-gutter-fringe+)
-;; (global-git-gutter+-mode t)
-;; (setq-default left-fringe-width  15)
-
 ;; web-mode
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -405,7 +379,7 @@
   (setq ess-history-directory "~/.R/")
   (setq ess-local-process-name "R")
   ;; see https://github.com/emacs-ess/ESS/pull/390 for ideas on how to integrate tab completion
-  ;; disable ehoing input
+  ;; disable echoing input
   (setq ess-eval-visibly nil)
   ;; Start R in the working directory by default
   (setq ess-ask-for-ess-directory nil)
