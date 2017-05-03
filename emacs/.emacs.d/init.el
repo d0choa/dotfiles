@@ -406,7 +406,7 @@
   (setq ess-local-process-name "R")
   ;; see https://github.com/emacs-ess/ESS/pull/390 for ideas on how to integrate tab completion
   ;; disable ehoing input
-  (setq ess-eval-visibly t)
+  (setq ess-eval-visibly nil)
   ;; Start R in the working directory by default
   (setq ess-ask-for-ess-directory nil)
   ;; Use tab completion
