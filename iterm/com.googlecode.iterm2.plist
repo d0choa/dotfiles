@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AllowClipboardAccess</key>
+	<true/>
 	<key>AlternateMouseScroll</key>
 	<true/>
 	<key>AppleAntiAliasingThreshold</key>
@@ -1071,7 +1073,11 @@
 	<string>7CFCC029-460C-44D4-9D96-51390739BDB1</string>
 	<key>DimInactiveSplitPanes</key>
 	<false/>
+	<key>DisableFullscreenTransparency</key>
+	<false/>
 	<key>EnableDivisionView</key>
+	<false/>
+	<key>EnableProxyIcon</key>
 	<false/>
 	<key>GlobalKeyMap</key>
 	<dict>
@@ -1174,7 +1180,13 @@
 			<string></string>
 		</dict>
 	</dict>
+	<key>HideActivityIndicator</key>
+	<false/>
+	<key>HideTabCloseButton</key>
+	<false/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
+	<true/>
+	<key>JobName</key>
 	<true/>
 	<key>LoadPrefsFromCustomFolder</key>
 	<true/>
@@ -1213,6 +1225,8 @@
 	</data>
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
+	<key>NSWindow Frame NSFontPanel</key>
+	<string>2049 110 445 103 0 0 2560 1418 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>1282 224 400 129 0 0 2560 1418 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
@@ -1220,13 +1234,17 @@
 	<key>NSWindow Frame SessionsPreferences</key>
 	<string>269 139 606 456 0 0 2560 1440 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>1697 378 796 473 0 0 2560 1418 </string>
+	<string>509 894 796 473 0 0 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>537 385 1406 911 0 0 2560 1418 </string>
+	<string>21 25 1252 1370 0 0 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>6 0 1434 896 0 0 2560 1418 </string>
+	<string>1286 25 1252 1370 0 0 2560 1418 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>1522 786 650 477 0 0 2560 1440 </string>
+	<string>23 22 1500 682 0 0 2560 1418 </string>
+	<key>NSWindow Frame iTerm Window 3</key>
+	<string>1282 14 1273 341 0 0 2560 1418 </string>
+	<key>NSWindow Frame iTerm Window 4</key>
+	<string>469 43 580 401 0 0 2560 1418 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1497,6 +1515,7 @@
 				<string>ssh</string>
 				<string>slogin</string>
 				<string>telnet</string>
+				<string>zsh</string>
 			</array>
 			<key>Keyboard Map</key>
 			<dict>
@@ -1803,11 +1822,11 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>SFMono-Bold 12</string>
+			<string>SFMono-Semibold 13</string>
 			<key>Option Key Sends</key>
 			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
-			<false/>
+			<integer>2</integer>
 			<key>Right Option Key Sends</key>
 			<integer>0</integer>
 			<key>Rows</key>
@@ -2135,6 +2154,7 @@
 				<string>ssh</string>
 				<string>slogin</string>
 				<string>telnet</string>
+				<string>zsh</string>
 			</array>
 			<key>Keyboard Map</key>
 			<dict>
@@ -2441,7 +2461,7 @@
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Normal Font</key>
-			<string>SFMono-Bold 12</string>
+			<string>SFMono-Semibold 12</string>
 			<key>Option Key Sends</key>
 			<integer>2</integer>
 			<key>Prompt Before Closing 2</key>
@@ -2512,6 +2532,8 @@
 	<true/>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
+	<key>NoSyncHaveUsedCopyMode</key>
+	<true/>
 	<key>NoSyncHaveWarnedAboutIncompatibleSoftware</key>
 	<true/>
 	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
@@ -2566,21 +2588,29 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-05-01T17:12:55Z</date>
+	<date>2017-05-24T17:11:43Z</date>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.45068108974358989</real>
 	<key>TabStyle</key>
 	<integer>1</integer>
+	<key>TabViewType</key>
+	<integer>0</integer>
 	<key>TerminalMargin</key>
 	<integer>10</integer>
 	<key>TerminalVMargin</key>
 	<integer>2</integer>
+	<key>UseBorder</key>
+	<false/>
 	<key>UseColorfgbgFallback</key>
+	<true/>
+	<key>WindowNumber</key>
 	<true/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>findIgnoreCase_iTerm</key>
 	<true/>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
