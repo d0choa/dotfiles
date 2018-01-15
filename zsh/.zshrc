@@ -87,3 +87,4 @@ source $ZSH/oh-my-zsh.sh
 # .zshrc
 autoload -U promptinit; promptinit
 prompt pure
+export PATH="/usr/local/sbin:$PATH"
