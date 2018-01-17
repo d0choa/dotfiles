@@ -577,6 +577,8 @@
 (global-set-key (kbd "s-C-<down>") 'shrink-window)
 (global-set-key (kbd "s-C-<up>") 'enlarge-window)
 
+;; Tramp connecting to zsh
+(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
 ;; (defvar sanityinc/fci-mode-suppressed nil)
 ;; (defadvice popup-create (before suppress-fci-mode activate)
