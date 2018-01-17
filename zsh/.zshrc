@@ -87,3 +87,6 @@ source $ZSH/oh-my-zsh.sh
 # .zshrc
 autoload -U promptinit; promptinit
 prompt pure
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
