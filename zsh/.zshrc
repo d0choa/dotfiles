@@ -87,4 +87,4 @@ source $ZSH/oh-my-zsh.sh
 # .zshrc
 autoload -U promptinit; promptinit
 prompt pure
-export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/tcl-tk/bin:/usr/local/sbin::$PATH"

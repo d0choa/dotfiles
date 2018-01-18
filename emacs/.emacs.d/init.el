@@ -64,11 +64,14 @@
 
 
 (if (display-graphic-p)
-    (load-theme 'monokai t)
+    (progn
+      (load-theme 'monokai t)
+      ;; no scrollbars
+      (scroll-bar-mode -1))
   (load-theme 'monokai t))
 
 ;;mode line
-;;(setq sml/no-confirm-load-theme t)
+;;(setq sml/no-confirm-theme t)
 ;;(sml/setup)
 ;;(setq sml/theme 'dark)
 
@@ -80,9 +83,6 @@
 
 ;; no toolbar
 (tool-bar-mode -1)
-
-;; no scrollbars
-(scroll-bar-mode -1)
 
 ;; mark fill column
 ;; (require 'fill-column-indicator)
@@ -238,7 +238,7 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key [C-tab] 'other-window) ;Change windows
 
-;;copy and paste from emacs to osx
+;; copy and paste from emacs to osx
 (defun copy-from-osx ()
   (shell-command-to-string "pbpaste"))
 
@@ -250,7 +250,6 @@
 
 (setq interprogram-cut-function 'paste-to-osx)
 (setq interprogram-paste-function 'copy-from-osx)
-
 
 ; Markdown mode
 (autoload 'markdown-mode "markdown-mode"
@@ -373,6 +372,8 @@
 
 ;; Start R in the working directory by default
 (setq ess-ask-for-ess-directory nil)
+
+(setq exec-path (cons "/usr/local/bin" exec-path))
 
 (with-eval-after-load "ess-site"
   (setq ess-indent-level 2)
@@ -577,6 +578,8 @@
 (global-set-key (kbd "s-C-<down>") 'shrink-window)
 (global-set-key (kbd "s-C-<up>") 'enlarge-window)
 
+;; Tramp connecting to zsh
+(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
 ;; (defvar sanityinc/fci-mode-suppressed nil)
 ;; (defadvice popup-create (before suppress-fci-mode activate)
