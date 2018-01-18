@@ -118,6 +118,8 @@ blacklists an application from Kwms tiling
 
     kwmc rule owner="Steam" properties={float="true"}
     kwmc rule owner="Photoshop" properties={float="true"}
+    kwmc rule owner="Quartz" properties={float="false"}
+
 */
 
 /*
