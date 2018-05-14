@@ -19,7 +19,7 @@
                       exec-path-from-shell
                       ;; find-file-in-project
                       idle-highlight-mode
-                      ido-ubiquitous
+                      ido-completing-read+
                       flx-ido
                       markdown-mode
                       flycheck
@@ -122,11 +122,16 @@
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
-;smek provides the history on top of M-x
+;smex provides the history on top of M-x
 (setq smex-save-file (expand-file-name ".smex-items" user-emacs-directory))
-(smex-initialize)
+(require 'smex) ; Not needed if you use package.el
+(smex-initialize) ; Can be omitted. This might cause a (minimal) delay
+					; when Smex is auto-initialized on its first run.
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
 
 (require 'exec-path-from-shell)
 (when (memq window-system '(mac ns))
@@ -159,8 +164,12 @@
       ido-default-file-method 'selected-window
       ido-auto-merge-work-directories-length -1)
 
-(ido-mode +1)
-(ido-ubiquitous-mode +1)
+(ido-mode 1)
+(ido-everywhere 1)
+
+(require 'ido-completing-read+)
+(ido-ubiquitous-mode 1)
+
 ;;; smarter fuzzy matching for ido
 (flx-ido-mode +1)
 ;; disable ido faces to see flx highlights
@@ -372,6 +381,9 @@
 
 ;; Start R in the working directory by default
 (setq ess-ask-for-ess-directory nil)
+
+;; use ido
+(setq ess-use-ido t)
 
 (setq exec-path (cons "/usr/local/bin" exec-path))
 
