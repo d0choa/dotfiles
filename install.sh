@@ -28,26 +28,26 @@ if ! type_exists 'git'; then
 fi
 
 
-link() {
-    # Force create/replace the symlink.
-    ln -fs "${DOTFILES_DIRECTORY}/${1}" "${HOME}/${2}"
-}
-
-mirrorfiles() {
-    # Force remove the vim directory if it's already there.
-    if [ -e "${HOME}/.emacs.d" ]; then
-        rm -rf "${HOME}/.emacs.d"
-    fi
-
-    # Create the necessary symbolic links between the `.dotfiles` and `HOME`
-    # directory. The `bash_profile` sources other files directly from the
-    # `.dotfiles` repository.
-    link "emacs"              ".emacs.d"
-	link "bash_prompt"        ".bash_prompt"
-	link "bash_profile"       ".bash_profile"
-	
-    e_success "Dotfiles update complete!"
-}
+# link() {
+#     # Force create/replace the symlink.
+#     ln -fs "${DOTFILES_DIRECTORY}/${1}" "${HOME}/${2}"
+# }
+#
+# mirrorfiles() {
+#     # Force remove the vim directory if it's already there.
+#     if [ -e "${HOME}/.emacs.d" ]; then
+#         rm -rf "${HOME}/.emacs.d"
+#     fi
+#
+#     # Create the necessary symbolic links between the `.dotfiles` and `HOME`
+#     # directory. The `bash_profile` sources other files directly from the
+#     # `.dotfiles` repository.
+#     link "emacs"              ".emacs.d"
+#   link "bash_prompt"        ".bash_prompt"
+#   link "bash_profile"       ".bash_profile"
+#
+#     e_success "Dotfiles update complete!"
+# }
 
 # Ask before potentially overwriting OS X defaults
 seek_confirmation "Warning: This step may modify your OS X system defaults."
@@ -89,13 +89,12 @@ else
     printf "Brewing skipped.\n"
 fi
 
-# Ask before potentially overwriting files
-seek_confirmation "Warning: This step may overwrite your existing dotfiles."
-
-if is_confirmed; then
-    mirrorfiles
-    source ${HOME}/.bash_profile
-else
-    printf "Aborting...\n"
-    exit 1
-fi
+# # Ask before potentially overwriting files
+# seek_confirmation "Warning: This step may overwrite your existing dotfiles."
+# if is_confirmed; then
+#     mirrorfiles
+#     source ${HOME}/.bash_profile
+# else
+#     printf "Aborting...\n"
+#     exit 1
+# fi
