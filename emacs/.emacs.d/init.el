@@ -4,39 +4,52 @@
 ;;; Code:
 
 (require 'package)
-(setq package-archives '(; ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")
-			 ("gnu" . "http://elpa.gnu.org/packages/")))
+(setq package-archives
+      '(("melpa-stable" . "http://stable.melpa.org/packages/")
+	("melpa" . "http://melpa.org/packages/"))
+      package-archive-priorities
+      '(("melpa-stable" . 10)
+	("melpa"        . 0)))
+
+;; pin packages
+(setq package-pinned-packages
+      '((ess              . "melpa")
+	(monokai          . "melpa")))
 
 (package-initialize)
-(when (not package-archive-contents) (package-refresh-contents))
+
+;; (setq load-path
+;;       (append '("~/.emacs.d/polymode/"  "~/.emacs.d/poly-markdown/"  "~/.emacs.d/poly-R/"  "~/.emacs.d/poly-noweb/")
+;;               load-path))
 
 (defvar my-packages '(
-                      auto-complete
-                      ;; ac-cider
-                      ;; better-defaults
-                      ;; cider
-                      exec-path-from-shell
-                      ;; find-file-in-project
+		      ;;auto-complete
+		      company
                       idle-highlight-mode
                       ido-completing-read+
                       flx-ido
                       markdown-mode
-                      flycheck
-                      flycheck-pos-tip
+		      ess
+                      ;; flycheck
+                      ;; flycheck-pos-tip
+		      polymode
+		      poly-markdown
+		      poly-R
+		      poly-noweb
                       magit
                       smex
                       scpaste
-                      polymode
-                      textmate
+                      ;; textmate
+		      elpy
+		      ;; adaptive-wrap
                       volatile-highlights
                       yaml-mode
-                      git-gutter-fringe+
-                      rainbow-mode
+                      ;; rainbow-mode
                       fill-column-indicator
                       monokai-theme
-		      noctilux-theme
-                      ;; sr-speedbar
+		      ;; noctilux-theme
+		      multi-line
+		      smooth-scrolling
                       yasnippet
                       r-autoyas
                       expand-region
@@ -45,14 +58,20 @@
 		      smart-mode-line
                       ))
 
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
 (let ((default-directory "~/.emacs.d/elpa/"))
     (normal-top-level-add-to-load-path '("."))
     (normal-top-level-add-subdirs-to-load-path))
 
-; install the missing packages
+;; install the missing packages
 (dolist (package my-packages)
   (unless (package-installed-p package)
     (package-install package)))
+
+;; (require 'ess-site)
+;; (require 'ess-r-mode)
 
 ;; (setq redisplay-dont-pause t)
 ;; (setq scroll-margin 1
@@ -62,13 +81,7 @@
 ;; (setq-default scroll-up-aggressively 0.01
 ;; 	      scroll-down-aggressively 0.01)
 
-
-(if (display-graphic-p)
-    (progn
-      (load-theme 'monokai t)
-      ;; no scrollbars
-      (scroll-bar-mode -1))
-  (load-theme 'monokai t))
+(load-theme 'monokai t)
 
 ;;mode line
 ;;(setq sml/no-confirm-theme t)
@@ -133,11 +146,11 @@
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 
-(require 'exec-path-from-shell)
-(when (memq window-system '(mac ns))
-      (exec-path-from-shell-initialize))
+;; (require 'exec-path-from-shell)
+;; (when (memq window-system '(mac ns))
+;;       (exec-path-from-shell-initialize))
 
-(textmate-mode)
+;; (textmate-mode)
 
 ;; Highlights volatile actitions such as paste
 (require 'volatile-highlights)
@@ -154,58 +167,33 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
-; Ido to navigate the filesystem
-(setq ido-enable-prefix nil
-      ido-enable-flex-matching t
-      ido-use-virtual-buffers t
-      ido-create-new-buffer 'always
-      ido-use-filename-at-point 'guess
-      ido-max-prospects 10
-      ido-default-file-method 'selected-window
-      ido-auto-merge-work-directories-length -1)
-
+;; ido mode
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
 (ido-mode 1)
-(ido-everywhere 1)
-
-(require 'ido-completing-read+)
-(ido-ubiquitous-mode 1)
-
-;;; smarter fuzzy matching for ido
-(flx-ido-mode +1)
-;; disable ido faces to see flx highlights
-(setq ido-use-faces nil)
-
 
 (defun my-common-hook ()
   ;; my customizations for all of c-mode and related modes
   (when (display-graphic-p) (fci-mode nil))
   (linum-mode 1)
-  (rainbow-mode 1) ;; Rainbow colors
+  ;; (rainbow-mode 1) ;; Rainbow colors
  )
 
 ; Load hook
 (add-hook 'prog-mode-hook 'my-common-hook)
-
-;; Activate flycheck
-(add-hook 'after-init-hook #'global-flycheck-mode)
-'(flycheck-lintr-caching nil)
-
-;; Activate pos-tip
-(with-eval-after-load 'flycheck
-  (flycheck-pos-tip-mode))
-
-(defun my-css-mode-hook ()
-  (rainbow-mode 1))
-(add-hook 'css-mode-hook 'my-css-mode-hook)
 
 ;; Anything that writes to the buffer while the region is active will overwrite
 ;; it, including paste, but also simply typing something or hitting backspace
 (delete-selection-mode 1)
 
 ; Autocomplete
-(require 'auto-complete-config)
-(ac-config-default)
-(ac-linum-workaround)
+;; (require 'auto-complete-config)
+;; (ac-config-default)
+;; (ac-linum-workaround)
+;; (setq ess-tab-complete-in-script t)
+
+;; Company mode
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;; Electric pair, indentation, layout
 (electric-indent-mode 1)
@@ -233,6 +221,7 @@
     (setq-default ispell-program-name "/usr/local/bin/aspell")
   (setq-default ispell-program-name "/usr/bin/aspell"))
 (setq-default ispell-list-command "list")
+
 
 ;; Allows the right alt key to work as alt
 (setq ns-right-alternate-modifier nil)
@@ -268,6 +257,14 @@
 (add-to-list 'auto-mode-alist '("\\.mdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+;; Python
+;; (setq python-shell-interpreter "ipython"
+;;       python-shell-interpreter-args "--simple-prompt -i")
+(elpy-enable)
+;; (elpy-use-ipython)
+(setq elpy-rpc-python-command "python3")
+(setq python-shell-interpreter "python3")
+
 ; Ruby
 (add-hook 'ruby-mode-hook
           (lambda ()
@@ -295,28 +292,44 @@
 
 ;; Polymode
 ;;; R modes
+(require 'polymode)
 (require 'poly-R)
-(require 'poly-markdown) 
-;;; MARKDOWN
-(add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
-;;; R modes
-(add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
-(add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
-(add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
+(require 'poly-markdown)
+(require 'poly-noweb)
+
+;; (autoload 'poly-markdown-mode "poly-markdown-mode"
+;;   "Major mode for editing R-Markdown files" t)
+;; (add-to-list 'auto-mode-alist '("\\.[Rr]md" . poly-markdown+r-mode))
+;; (add-to-list 'auto-mode-alist '("\\.[Rr]md" . poly-markdown-mode))
+;; (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
 
 ;; Let you use markdown buffer easily
 ;; (setq ess-nuke-trailing-whitespace-p nil) 
 
 ;; Lintrs
-(setq flycheck-lintr-linters "with_defaults(camel_case_linter=NULL, infix_spaces_linter=NULL, line_length_linter=lintr::line_length_linter(120))")
+;; (setq flycheck-lintr-linters "with_defaults(camel_case_linter=NULL, infix_spaces_linter=NULL, line_length_linter=lintr::line_length_linter(120))")
 
 
 ;; for ESS scrolling etc.
 (setq comint-prompt-read-only t)
-(setq comint-scroll-to-bottom-on-input t)
-(setq comint-scroll-to-bottom-on-output t)
-(setq comint-move-point-for-output t)
+;; (setq comint-scroll-to-bottom-on-input t)
+;; (setq comint-scroll-to-bottom-on-output t)
+;; (setq comint-move-point-for-output t)
 
+;; keybinding for magrittr pipe
+;; (global-set-key (kbd "C-S-m") (lambda () (interactive) (insert "%>%")))
+
+;; Activate flycheck
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
+;; '(flycheck-lintr-caching nil)
+
+;; (when (require 'flycheck nil t)
+;;   (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+;;   (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+;; Activate pos-tip
+;; (with-eval-after-load 'flycheck
+;;   (flycheck-pos-tip-mode))
 
 ; Variables I set up from within emacs
 (custom-set-variables
@@ -327,7 +340,7 @@
  '(compilation-message-face (quote default))
  '(custom-safe-themes
    (quote
-    ("6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" "938d8c186c4cb9ec4a8d8bc159285e0d0f07bad46edf20aa469a89d0d2a586ea" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "f78de13274781fbb6b01afd43327a4535438ebaeec91d93ebdbba1e3fba34d3c" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("a24c5b3c12d147da6cef80938dca1223b7c7f70f2f382b26308eba014dc4833a" "6de7c03d614033c0403657409313d5f01202361e35490a3404e33e46663c2596" "ed317c0a3387be628a48c4bbdb316b4fa645a414838149069210b66dd521733f" "938d8c186c4cb9ec4a8d8bc159285e0d0f07bad46edf20aa469a89d0d2a586ea" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "f78de13274781fbb6b01afd43327a4535438ebaeec91d93ebdbba1e3fba34d3c" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(ess-R-font-lock-keywords
    (quote
     ((ess-R-fl-keyword:modifiers . t)
@@ -339,9 +352,6 @@
      (ess-fl-keyword:numbers . t)
      (ess-R-fl-keyword:F&T . t))))
  '(fci-rule-column 120)
- '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- '(flycheck-lintr-caching nil)
- '(global-flycheck-mode t)
  '(global-linum-mode nil)
  '(inferior-ess-r-font-lock-keywords
    (quote
@@ -364,7 +374,7 @@
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (ample-theme color-theme-sanityinc-tomorrow solarized-theme fill-column-indicator flycheck-pos-tip yaml-mode web-mode volatile-highlights textmate smex smart-mode-line scpaste rainbow-mode r-autoyas polymode noctilux-theme monokai-theme markdown-mode magit ido-ubiquitous idle-highlight-mode git-gutter-fringe+ flycheck flx-ido expand-region exec-path-from-shell coffee-mode auto-complete)))
+    (powerline smart-mode-line web-mode coffee-mode expand-region r-autoyas smooth-scrolling multi-line monokai-theme fill-column-indicator yaml-mode volatile-highlights elpy scpaste smex magit poly-R poly-markdown polymode ess markdown-mode flx-ido ido-completing-read+ idle-highlight-mode company)))
  '(show-paren-mode t))
 
 ;; web-mode
@@ -382,44 +392,40 @@
 ;; Start R in the working directory by default
 (setq ess-ask-for-ess-directory nil)
 
-;; use ido
-(setq ess-use-ido t)
-
 (setq exec-path (cons "/usr/local/bin" exec-path))
 
-(with-eval-after-load "ess-site"
-  (setq ess-indent-level 2)
-  (setq ess-history-directory "~/.R/")
-  (setq ess-local-process-name "R")
-  ;; see https://github.com/emacs-ess/ESS/pull/390 for ideas on how to integrate tab completion
-  ;; disable echoing input
-  (setq ess-eval-visibly nil)
-  ;; Start R in the working directory by default
-  (setq ess-ask-for-ess-directory nil)
-  ;; Use tab completion
-  (setq ess-tab-complete-in-script t)
-  (setq ansi-color-for-comint-mode 'filter)
-  ;;(setq inferior-R-program-name "/usr/local/bin/R")
-  (setq comint-scroll-to-bottom-on-input t)
-  (setq comint-scroll-to-bottom-on-output t)
-  ;; extra ESS stuff inspired by https://github.com/gaborcsardi/dot-emacs/blob/master/.emacs
-  (ess-toggle-underscore nil)
-  (defun my-ess-execute-screen-options (foo)
-    "cycle through windows whose major mode is inferior-ess-mode and fix width"
-    (interactive)
-    (setq my-windows-list (window-list))
-    (while my-windows-list
-      (when (with-selected-window (car my-windows-list) (string= "inferior-ess-mode" major-mode))
-        (with-selected-window (car my-windows-list) (ess-execute-screen-options t)))
-      (setq my-windows-list (cdr my-windows-list))))
-  (add-to-list 'window-size-change-functions 'my-ess-execute-screen-options)
-  (define-key ess-mode-map (kbd "<C-return>") 'ess-eval-region-or-function-or-paragraph-and-step)
-  ;; truncate long lines in R source files
-  (add-hook 'ess-mode-hook
-            (lambda()
-              ;; don't wrap long lines
-              (toggle-truncate-lines t)
-              (outline-minor-mode t))))
+;; (with-eval-after-load "ess-r-mode"
+;; (setq ess-indent-level 4)
+;; (setq ess-history-directory "~/.R/")
+;; ;; (setq ess-local-process-name "R")
+;; ;; see https://github.com/emacs-ess/ESS/pull/390 for ideas on how to integrate tab completion
+;; ;; disable echoing input
+;; (setq ess-eval-visibly 'nowait)
+;; ;; Start R in the working directory by default
+;; (setq ess-ask-for-ess-directory nil)
+;; ;; Use tab completion
+;; ;; (setq ess-tab-complete-in-script t)
+;; ;; (setq ansi-color-for-comint-mode 'filter)
+;; ;;(setq inferior-R-program-name "/usr/local/bin/R")
+;; (setq comint-scroll-to-bottom-on-input t)
+;; ;; extra ESS stuff inspired by https://github.com/gaborcsardi/dot-emacs/blob/master/.emacs
+;; (ess-toggle-underscore nil)
+;; (defun my-ess-execute-screen-options (foo)
+;;   "cycle through windows whose major mode is inferior-ess-mode and fix width"
+;;   (interactive)
+;;   (setq my-windows-list (window-list))
+;;   (while my-windows-list
+;;     (when (with-selected-window (car my-windows-list) (string= "inferior-ess-mode" major-mode))
+;;       (with-selected-window (car my-windows-list) (ess-execute-screen-options t)))
+;;     (setq my-windows-list (cdr my-windows-list))))
+;; (add-to-list 'window-size-change-functions 'my-ess-execute-screen-options)
+;; (define-key ess-mode-map (kbd "<C-return>") 'ess-eval-region-or-function-or-paragraph-and-step)
+;; ;; truncate long lines in R source files
+;; (add-hook 'ess-mode-hook
+;;           (lambda()
+;;             ;; don't wrap long lines
+;;             (toggle-truncate-lines t)
+;;             (outline-minor-mode t)))
 
 ;; ; For R. The first two lines are needed *before* loading 
 ;; ; ess, to set indentation to two spaces
@@ -435,6 +441,45 @@
 ;; ;;(setq inferior-R-program-name "/usr/local/bin/R")
 ;; (setq comint-scroll-to-bottom-on-input t)
 ;; (setq comint-scroll-to-bottom-on-output t)
+
+;; 
+;; Line wrapping and position
+;; From https://github.com/kjhealy/emacs-starter-kit/blob/master/starter-kit-text.org
+
+;; (when (fboundp 'adaptive-wrap-prefix-mode)
+;;   (defun my-activate-adaptive-wrap-prefix-mode ()
+;;     "Toggle `visual-line-mode' and `adaptive-wrap-prefix-mode' simultaneously."
+;;     (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1)))
+;;   (add-hook 'visual-line-mode-hook 'my-activate-adaptive-wrap-prefix-mode))
+;; (global-visual-line-mode t)
+
+;;; prefer auto-fill to visual line wrap in ESS mode
+;; (add-hook 'ess-mode-hook 'turn-on-auto-fill)
+;; (add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
+
+;; ;;; but turn off auto-fill in tex and markdown
+;; (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
+;; (add-hook 'latex-mode-hook 'turn-off-auto-fill)
+
+;;; unfill paragraph
+(defun unfill-paragraph ()
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))
+(global-set-key (kbd "<f6>") 'unfill-paragraph)
+
+(require 'multi-line)
+(global-set-key (kbd "C-c d") 'multi-line)
+
+;; smooth-scrolling 
+(require 'smooth-scrolling)
+
+;; more smooth efforts.
+(setq-default 
+ scroll-conservatively 0
+ scroll-up-aggressively 0.01
+ scroll-down-aggressively 0.01)
+
 
 
 ;; To compile closest Makefile
@@ -483,7 +528,7 @@
   ;; my customizations for all of c-mode and related modes
   (when (display-graphic-p) (fci-mode nil))
   (linum-mode 1)
-  (rainbow-mode 1) ;; Rainbow colors
+  ;; (rainbow-mode 1) ;; Rainbow colors
   )
 
 (add-hook 'ess-mode-hook
@@ -515,22 +560,22 @@
 	    (set (make-local-variable 'compile-command) (format "make -f %s " (get-closest-pathname)))
 	    ))
 
-(require 'ess-site)
+;; (require 'ess-site)
 
 ; does not work for if you press `M-;`, but does work for <TAB>
-(setq ess-fancy-comments nil)
-(setq ess-indent-level 2)
+;; (setq ess-fancy-comments nil)
+;; (setq ess-indent-level 2)
 ; from http://stackoverflow.com/a/25219054/2723794 thank god, ESS apparently considers function bodies to be "continued statements", which are apparently independent of indent level! sheesh
-(setq ess-first-continued-statement-offset 2
-      ess-continued-statement-offset 0)
+;; (setq ess-first-continued-statement-offset 2
+;;       ess-continued-statement-offset 0)
 
 ;; Some keys for ESS
-(define-key input-decode-map "\e\eOA" [(meta up)])
-(define-key input-decode-map "\e\eOB" [(meta down)])
+;; (define-key input-decode-map "\e\eOA" [(meta up)])
+;; (define-key input-decode-map "\e\eOB" [(meta down)])
 
-(defun my-ess-post-run-hook ()
-  (local-set-key "\C-cw" 'ess-execute-screen-options))
-(add-hook 'ess-post-run-hook 'my-ess-post-run-hook)
+;; (defun my-ess-post-run-hook ()
+;;   (local-set-key "\C-cw" 'ess-execute-screen-options))
+;; (add-hook 'ess-post-run-hook 'my-ess-post-run-hook)
 
 ;; ???
 (setq url-http-attempt-keepalives nil)
@@ -550,14 +595,15 @@
      ))
 
 (require 'r-autoyas)
+(add-hook 'ess-mode-hook 'r-autoyas-ess-activate)
 
-(defun my-ess-mode-hook ()
-  (ess-toggle-underscore nil) ;; Do not replace _ with <-
-  (r-autoyas-ess-activate)   ;; r-autoyas
-  (rainbow-mode 1) ;; Rainbow colors
-)
+;; (defun my-ess-mode-hook ()
+;;   (ess-toggle-underscore nil) ;; Do not replace _ with <-
+;;   (r-autoyas-ess-activate)   ;; r-autoyas
+;;   (rainbow-mode 1) ;; Rainbow colors
+;; )
 
-(add-hook 'ess-mode-hook 'my-ess-mode-hook)
+;; (add-hook 'ess-mode-hook 'my-ess-mode-hook)
 
 ; Save/load history of minibuffer
 (savehist-mode 1)
@@ -581,7 +627,7 @@
 
 
 
-(add-hook 'ess-mode (lambda () (add-to-list 'ac-sources 'ac-source-R)))
+;; (add-hook 'ess-mode (lambda () (add-to-list 'ac-sources 'ac-source-R)))
 
 
 ;; Play with window sizes
@@ -634,3 +680,9 @@
 
 (require 'expand-region)
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
