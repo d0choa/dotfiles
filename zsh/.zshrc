@@ -51,7 +51,22 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting)
+plugins=(
+  git
+  common-aliases
+  node
+  npm
+  rand-quote
+  sudo
+  yarn
+  z
+  colored-man-pages
+  colorize
+  cp
+  zsh-syntax-highlighting
+  zsh-autosuggestions
+)
+
 
 source $ZSH/oh-my-zsh.sh
 
@@ -87,9 +102,12 @@ source $ZSH/oh-my-zsh.sh
 # .zshrc
 autoload -U promptinit; promptinit
 prompt pure
+
 export PATH="/usr/local/opt/tcl-tk/bin:/usr/local/sbin::$PATH"
 #export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
 #export MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
+export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/usr/local/opt/gettext/bin:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 export PATH="/usr/local/opt/curl/bin:$PATH"
