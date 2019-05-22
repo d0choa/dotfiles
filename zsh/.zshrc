@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH=/Users/dochoa/.oh-my-zsh
+  export ZSH=/Users/ochoa/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
@@ -88,3 +88,12 @@ source $ZSH/oh-my-zsh.sh
 autoload -U promptinit; promptinit
 prompt pure
 export PATH="/usr/local/opt/tcl-tk/bin:/usr/local/sbin::$PATH"
+#export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+#export MANPATH="/usr/local/opt/findutils/libexec/gnuman:$MANPATH"
+export PATH="/usr/local/opt/gettext/bin:$PATH"
+export PATH="/usr/local/opt/openssl/bin:$PATH"
+export PATH="/usr/local/opt/curl/bin:$PATH"
+export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
