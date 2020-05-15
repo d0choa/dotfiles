@@ -167,6 +167,13 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
+;; sparql mode
+(add-to-list 'load-path "/path/to/sparql-mode-dir")
+(autoload 'sparql-mode "sparql-mode.el"
+  "Major mode for editing SPARQL files" t)
+(add-to-list 'auto-mode-alist '("\\.sparql$" . sparql-mode))
+(add-hook 'sparql-mode-hook 'company-mode)
+
 ;; ido mode
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
